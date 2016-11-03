@@ -58,7 +58,6 @@ public class CollectionBasedRepoLibros implements RepoLibros {
     public Libro addLibroSiNoExiste(Libro libro) {
         if (this.getLibro(libro) == null) {
             this.addLibro(libro);
-            libro.setId(new Long(libros.size() - 1));
         }
         return libro;
     }
@@ -95,6 +94,12 @@ public class CollectionBasedRepoLibros implements RepoLibros {
     @Override
     public void removeLibro(Libro libro) {
         libros.remove(libro);
+    }
+
+    @Override
+    public void updateLibro(Libro _libro) {
+        this.libros.removeIf(libro -> libro.getId().equals(_libro.getId()));
+        this.addLibro(_libro);
     }
 
     @Override

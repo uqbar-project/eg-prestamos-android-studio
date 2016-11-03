@@ -1,5 +1,7 @@
 package ar.edu.uqbar.prestamos.persistence;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -63,12 +65,20 @@ public class CollectionBasedPrestamos implements RepoPrestamos {
 
     @Override
     public void addPrestamo(Prestamo prestamo) {
+        prestamo.setId(new Long(prestamos.size() + 1));
         prestamos.add(prestamo);
     }
 
     @Override
     public void removePrestamo(Prestamo prestamo) {
         prestamos.remove(prestamo);
+    }
+
+    @Override
+    public void updatePrestamo(Prestamo _prestamo) {
+        this.prestamos.removeIf(prestamo ->
+                prestamo.getId().equals(_prestamo.getId()));
+        this.addPrestamo(_prestamo);
     }
 
 }

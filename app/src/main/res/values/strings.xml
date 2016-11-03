@@ -17,4 +17,5 @@
     <string name="title_activity_nuevo_prestamo">Nuevo Préstamo</string>
     <string name="title_txtContacto">Contacto</string>
     <string name="libro_titulo_hint">Libro a prestar</string>
+    <string name="action_return">Devolver</string>
 </resources>

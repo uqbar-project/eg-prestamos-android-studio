@@ -8,6 +8,7 @@ import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.TextView;
@@ -21,7 +22,7 @@ import ar.edu.uqbar.prestamos.util.ImageUtil;
 /**
  * Created by fernando on 11/1/16.
  */
-public class PrestamoAdapter implements ListAdapter {
+public class PrestamoAdapter extends BaseAdapter {
 
     List prestamosPendientes;
     Activity mainActivity;
@@ -29,26 +30,6 @@ public class PrestamoAdapter implements ListAdapter {
     public PrestamoAdapter(Activity mainActivity, List<Prestamo> prestamosPendientes) {
         this.prestamosPendientes = prestamosPendientes;
         this.mainActivity = mainActivity;
-    }
-
-    @Override
-    public boolean areAllItemsEnabled() {
-        return false;
-    }
-
-    @Override
-    public boolean isEnabled(int position) {
-        return false;
-    }
-
-    @Override
-    public void registerDataSetObserver(DataSetObserver observer) {
-
-    }
-
-    @Override
-    public void unregisterDataSetObserver(DataSetObserver observer) {
-
     }
 
     @Override
@@ -67,11 +48,6 @@ public class PrestamoAdapter implements ListAdapter {
     }
 
     @Override
-    public boolean hasStableIds() {
-        return false;
-    }
-
-    @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         Prestamo prestamo = (Prestamo) getItem(position);
         LayoutInflater inflater = (LayoutInflater) mainActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -85,26 +61,4 @@ public class PrestamoAdapter implements ListAdapter {
         return row;
     }
 
-    @Override
-    public int getItemViewType(int position) {
-        return 0;
-    }
-
-    /**
-     * Debe devolver los diferentes tipos de vista asociados a este adapter (en el caso de
-     * querer reutilizarlos).
-     *
-     * http://stackoverflow.com/questions/24854861/java-lang-illegalargumentexception-cant-have-a-viewtypecount-1
-     *
-     * @return
-     */
-    @Override
-    public int getViewTypeCount() {
-        return 1;
-    }
-
-    @Override
-    public boolean isEmpty() {
-        return false;
-    }
 }

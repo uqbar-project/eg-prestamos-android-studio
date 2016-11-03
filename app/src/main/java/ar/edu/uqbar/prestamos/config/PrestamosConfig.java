@@ -8,6 +8,8 @@ import ar.edu.uqbar.prestamos.persistence.PhoneBasedContactos;
 import ar.edu.uqbar.prestamos.persistence.RepoContactos;
 import ar.edu.uqbar.prestamos.persistence.RepoLibros;
 import ar.edu.uqbar.prestamos.persistence.RepoPrestamos;
+import ar.edu.uqbar.prestamos.persistence.SQLLiteRepoLibros;
+import ar.edu.uqbar.prestamos.persistence.SQLLiteRepoPrestamos;
 
 /**
  * Created by fernando on 10/27/16.
@@ -17,14 +19,14 @@ public class PrestamosConfig {
 
     public static RepoLibros getRepoLibros(Activity activity) {
         // PERSISTENTE
-        // return new SQLiteHomeLibros(activity);
+        // return new SQLLiteRepoLibros(activity);
         // NO PERSISTENTE
         return CollectionBasedRepoLibros.getInstance();
     }
 
     public static RepoPrestamos getRepoPrestamos(Activity activity) {
         // PERSISTENTE
-        // return new SQLiteHomePrestamos(activity);
+        // return new SQLLiteRepoPrestamos(activity);
         // NO PERSISTENTE
         return CollectionBasedPrestamos.getInstance();
     }

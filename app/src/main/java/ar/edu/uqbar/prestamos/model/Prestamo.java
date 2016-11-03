@@ -111,4 +111,8 @@ public class Prestamo {
         libro.prestar();
     }
 
+    public void devolver() {
+        libro.devolver();
+        setFechaDevolucion(new Date());
+    }
 }

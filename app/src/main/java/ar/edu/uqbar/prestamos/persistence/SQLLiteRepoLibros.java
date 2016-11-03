@@ -8,6 +8,7 @@ import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Function;
 
 import ar.edu.uqbar.prestamos.model.Libro;
@@ -35,6 +36,7 @@ public class SQLLiteRepoLibros implements RepoLibros {
             prestado = 1;
         }
         ContentValues values = new ContentValues();
+        values.put("id", libro.getId());
         values.put("titulo", libro.getTitulo());
         values.put("autor", libro.getAutor());
         values.put("prestado", prestado);
@@ -46,7 +48,10 @@ public class SQLLiteRepoLibros implements RepoLibros {
 
     @Override
     public Libro addLibroSiNoExiste(Libro libro) {
-        return null;
+        if (this.getLibro(libro) == null) {
+            this.addLibro(libro);
+        }
+        return libro;
     }
 
     @Override
@@ -84,6 +89,12 @@ public class SQLLiteRepoLibros implements RepoLibros {
     }
 
     @Override
+    public void updateLibro(Libro libro) {
+        this.removeLibro(libro);
+        this.addLibro(libro);
+    }
+
+    @Override
     public void removeLibro(int posicion) {
         borrarLibros("id = ? ", new String[]{"" + posicion + 1});
     }
@@ -94,9 +105,12 @@ public class SQLLiteRepoLibros implements RepoLibros {
     }
 
     private Libro crearLibro(Cursor cursor) {
-        Libro libro = new Libro(cursor.getString(0), cursor.getString(1));
-        libro.setId(cursor.getLong(3));
-        if (cursor.getInt(2) == 1) {
+        Long id = cursor.getLong(0);
+        String titulo = cursor.getString(1);
+        String autor = cursor.getString(2);
+        int prestado = cursor.getInt(3);
+        Libro libro = new Libro(id, titulo, autor);
+        if (prestado == 1) {
             libro.prestar();
         }
         Log.w("Librex", "genero un libro en memoria | id: " + libro.getId() + " | libro: " + libro);
@@ -112,7 +126,11 @@ public class SQLLiteRepoLibros implements RepoLibros {
      */
     private Libro libroPor(String campo, String[] condicion) {
         List<Libro> libros = internalGetLibro((SQLiteDatabase con) -> con.query("Libros", CAMPOS_LIBRO, campo, condicion, null, null, null));
-        return libros.stream().findFirst().get();
+        Optional<Libro> libro = libros.stream().findFirst();
+        if (!libro.isPresent()) {
+            return null;
+        }
+        return libro.get();
     }
 
     /**

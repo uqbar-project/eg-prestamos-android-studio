@@ -20,6 +20,7 @@ public interface RepoLibros {
     public Libro getLibro(int posicion);
     public List<Libro> getLibrosPrestables();
     public void removeLibro(Libro libro);
+    public void updateLibro(Libro libro);
     public void removeLibro(int posicion);
     public void eliminarLibros();
 

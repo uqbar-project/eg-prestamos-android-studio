@@ -14,5 +14,6 @@ public interface RepoPrestamos {
     public Prestamo getPrestamo(Long id);
     public void addPrestamo(Prestamo prestamo);
     public void removePrestamo(Prestamo prestamo);
+    public void updatePrestamo(Prestamo prestamo);
 
 }

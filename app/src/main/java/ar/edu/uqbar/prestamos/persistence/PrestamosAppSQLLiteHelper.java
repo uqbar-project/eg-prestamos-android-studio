@@ -11,7 +11,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class PrestamosAppSQLLiteHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "librex.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 5;
 
     public PrestamosAppSQLLiteHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);

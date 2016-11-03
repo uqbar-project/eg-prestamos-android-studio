@@ -15,4 +15,11 @@
         android:showAsAction="always"
         android:title="@string/action_email_contact"/>
 
+    <item
+        android:id="@+id/action_return"
+        android:icon="@drawable/ic_undo"
+        android:orderInCategory="200"
+        android:showAsAction="always"
+        android:title="@string/action_return"/>
+
 </menu>

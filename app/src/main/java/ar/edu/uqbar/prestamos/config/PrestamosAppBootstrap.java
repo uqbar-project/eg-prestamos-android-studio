@@ -37,11 +37,11 @@ public class PrestamosAppBootstrap {
                 new Contacto("5", "42040007", "Estefanía Miguel", "tefffffi@hotmail.com",
                         ImageUtil.convertToImage(activity, "tefi.jpg")));
 
-        Libro elAleph = new Libro("El Aleph", "J.L. Borges");
+        Libro elAleph = new Libro(1, "El Aleph", "J.L. Borges");
         elAleph.prestar();
-        Libro laNovelaDePeron = new Libro("La novela de Perón", "T.E. Martínez");
+        Libro laNovelaDePeron = new Libro(2, "La novela de Perón", "T.E. Martínez");
         laNovelaDePeron.prestar();
-        Libro cartasMarcadas = new Libro("Cartas marcadas", "A. Dolina");
+        Libro cartasMarcadas = new Libro(3, "Cartas marcadas", "A. Dolina");
         cartasMarcadas.prestar();
 
         RepoLibros repoLibros = PrestamosConfig.getRepoLibros(activity);
@@ -51,13 +51,13 @@ public class PrestamosAppBootstrap {
         elAleph = repoLibros.addLibroSiNoExiste(elAleph);
         laNovelaDePeron = repoLibros.addLibroSiNoExiste(laNovelaDePeron);
         cartasMarcadas = repoLibros.addLibroSiNoExiste(cartasMarcadas);
-        repoLibros.addLibroSiNoExiste(new Libro("Rayuela", "J. Cortázar"));
-        repoLibros.addLibroSiNoExiste(new Libro("No habrá más penas ni olvido", "O. Soriano"));
-        repoLibros.addLibroSiNoExiste(new Libro("No habrá más penas ni olvido", "O. Soriano"));
-        repoLibros.addLibroSiNoExiste(new Libro("Cuentos de los años felices", "O. Soriano"));
-        repoLibros.addLibroSiNoExiste(new Libro("Una sombra ya pronto serás", "O. Soriano"));
-        repoLibros.addLibroSiNoExiste(new Libro("Octaedro", "J. Cortázar"));
-        repoLibros.addLibroSiNoExiste(new Libro("Ficciones", "J.L. Borges"));
+        repoLibros.addLibroSiNoExiste(new Libro(4, "Rayuela", "J. Cortázar"));
+        repoLibros.addLibroSiNoExiste(new Libro(5, "No habrá más penas ni olvido", "O. Soriano"));
+        repoLibros.addLibroSiNoExiste(new Libro(6, "La invención de Morel", "A. Bioy Casares"));
+        repoLibros.addLibroSiNoExiste(new Libro(7, "Cuentos de los años felices", "O. Soriano"));
+        repoLibros.addLibroSiNoExiste(new Libro(8, "Una sombra ya pronto serás", "O. Soriano"));
+        repoLibros.addLibroSiNoExiste(new Libro(9, "Octaedro", "J. Cortázar"));
+        repoLibros.addLibroSiNoExiste(new Libro(10, "Ficciones", "J.L. Borges"));
 
         Contacto gise = new Contacto(null, "46050144", null, null, null);
         Contacto fede = new Contacto(null, "47067261", null, null, null);
