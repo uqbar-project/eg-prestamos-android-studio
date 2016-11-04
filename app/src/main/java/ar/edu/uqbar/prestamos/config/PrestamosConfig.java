@@ -19,14 +19,14 @@ public class PrestamosConfig {
 
     public static RepoLibros getRepoLibros(Activity activity) {
         // PERSISTENTE
-        // return new SQLLiteRepoLibros(activity);
+        //return new SQLLiteRepoLibros(activity);
         // NO PERSISTENTE
         return CollectionBasedRepoLibros.getInstance();
     }
 
     public static RepoPrestamos getRepoPrestamos(Activity activity) {
         // PERSISTENTE
-        // return new SQLLiteRepoPrestamos(activity);
+        //return new SQLLiteRepoPrestamos(activity);
         // NO PERSISTENTE
         return CollectionBasedPrestamos.getInstance();
     }

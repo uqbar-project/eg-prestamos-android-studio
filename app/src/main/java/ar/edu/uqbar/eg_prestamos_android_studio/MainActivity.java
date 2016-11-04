@@ -135,10 +135,13 @@ public class MainActivity extends Activity implements ActionMode.Callback {
         switch (item.getItemId()) {
             case R.id.action_call_contact:
                 llamar(prestamo.getTelefono());
+                break;
             case R.id.action_email_contact:
                 enviarMail(prestamo);
+                break;
             case R.id.action_return:
                 devolver(prestamo);
+                break;
             default:
         }
         return false;

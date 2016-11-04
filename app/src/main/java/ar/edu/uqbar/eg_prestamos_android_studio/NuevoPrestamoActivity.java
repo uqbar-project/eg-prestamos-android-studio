@@ -26,6 +26,7 @@ import ar.edu.uqbar.prestamos.model.BusinessException;
 import ar.edu.uqbar.prestamos.model.Contacto;
 import ar.edu.uqbar.prestamos.model.Libro;
 import ar.edu.uqbar.prestamos.model.Prestamo;
+import ar.edu.uqbar.prestamos.persistence.RepoLibros;
 import ar.edu.uqbar.prestamos.persistence.RepoPrestamos;
 import ar.edu.uqbar.prestamos.util.ImageUtil;
 
@@ -105,10 +106,13 @@ public class NuevoPrestamoActivity extends Activity implements TextWatcher {
             prestamo.setContacto(contacto);
             prestamo.prestar();
             getRepoPrestamos().addPrestamo(prestamo);
+            getRepoLibros().updateLibro(libroSeleccionado);
             this.finish();
         } catch (BusinessException be) {
             Toast.makeText(this, be.getMessage(), Toast.LENGTH_SHORT).show();
         } catch (Exception e) {
+            Log.e("Crear prestamo", e.getMessage());
+            e.printStackTrace();
             Toast.makeText(this, "Ocurrió un error. Consulte con el administrador del sistema.", Toast.LENGTH_SHORT).show();
         }
     }
@@ -135,5 +139,8 @@ public class NuevoPrestamoActivity extends Activity implements TextWatcher {
 
     public RepoPrestamos getRepoPrestamos() {
         return PrestamosConfig.getRepoPrestamos(this);
+    }
+    public RepoLibros getRepoLibros() {
+        return PrestamosConfig.getRepoLibros(this);
     }
 }

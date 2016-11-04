@@ -26,33 +26,24 @@ public class SQLLiteRepoPrestamos implements RepoPrestamos {
 
     PrestamosAppSQLLiteHelper db;
     Activity activity;
-    private Long maxIdPrestamo;
 
     public SQLLiteRepoPrestamos(Activity activity) {
-        db = new PrestamosAppSQLLiteHelper(activity);
+        db = PrestamosAppSQLLiteHelper.getInstance(activity);
         this.activity = activity;
     }
 
     @Override
     public List<Prestamo> getPrestamosPendientes() {
-        List<Prestamo> result = new ArrayList<Prestamo>();
-        SQLiteDatabase con = db.getReadableDatabase();
-        try {
-            Cursor curPrestamos = con.query(TABLA_PRESTAMOS, CAMPOS_PRESTAMO, null, null, null, null, null);
-            while (curPrestamos.moveToNext()) {
-                result.add(crearPrestamo(curPrestamos));
-            }
-            curPrestamos.close();
-            Log.w("Librex", "Préstamos pendientes " + result);
-            return result;
-        } finally {
-            if (con != null) con.close();
-        }
+        return getPrestamos("fecha_devolucion is null", null);
     }
 
     @Override
     public Prestamo getPrestamo(Long id) {
-        return null;
+        List<Prestamo> prestamos = getPrestamos("id", new String[] {id.toString()});
+        if (prestamos.isEmpty()) {
+            return null;
+        }
+        return prestamos.get(0);
     }
 
     @Override
@@ -66,6 +57,7 @@ public class SQLLiteRepoPrestamos implements RepoPrestamos {
                 prestamo.setId(idPrestamo);
             }
             values.put("id", idPrestamo);
+            Log.w("Crear prestamo", idPrestamo.toString());
             values.put("libro_id", prestamo.getLibro().getId());
             values.put("contacto_phone", prestamo.getTelefono());
             // uso de extension methods de DateUtil
@@ -75,11 +67,10 @@ public class SQLLiteRepoPrestamos implements RepoPrestamos {
             } else {
                 values.put("fecha_devolucion", prestamo.getFechaDevolucion().toString());
             }
-
             con.insert(TABLA_PRESTAMOS, null, values);
             Log.w("Librex", "Se creó préstamo " + prestamo + " en SQLite");
         } finally {
-            if (con != null) con.close();
+            //if (con != null) con.close();
         }
     }
 
@@ -87,9 +78,9 @@ public class SQLLiteRepoPrestamos implements RepoPrestamos {
     public void removePrestamo(Prestamo prestamo) {
         SQLiteDatabase con = db.getReadableDatabase();
         try {
-            con.delete(TABLA_PRESTAMOS, "id = ? ", new String[]{"" + prestamo.getId()});
+            con.delete(TABLA_PRESTAMOS, "ID = ? ", new String[]{"" + prestamo.getId()});
         } finally {
-            if (con != null) con.close();
+            //if (con != null) con.close();
         }
     }
 
@@ -101,11 +92,11 @@ public class SQLLiteRepoPrestamos implements RepoPrestamos {
 
     private Prestamo crearPrestamo(Cursor cursor) {
         Contacto contactoBuscar = new Contacto();
-        Long idPrestamo = cursor.getLong(0);
-        int idLibro = cursor.getInt(1);
-        String numeroTelContacto = cursor.getString(2);
-        String fecha = cursor.getString(3);
-        String fechaDevolucion = cursor.getString(4);
+        Long idPrestamo = new Long(cursor.getInt(cursor.getColumnIndex("ID")));
+        int idLibro = cursor.getInt(cursor.getColumnIndex("LIBRO_ID"));
+        String numeroTelContacto = cursor.getString(cursor.getColumnIndex("CONTACTO_PHONE"));
+        String fecha = cursor.getString(cursor.getColumnIndex("FECHA"));
+        String fechaDevolucion = cursor.getString(cursor.getColumnIndex("FECHA_DEVOLUCION"));
         contactoBuscar.setNumero(numeroTelContacto);
         Contacto contacto = PrestamosConfig.getRepoContactos(activity).getContacto(contactoBuscar);
         Libro libro = PrestamosConfig.getRepoLibros(activity).getLibro(idLibro);
@@ -120,17 +111,36 @@ public class SQLLiteRepoPrestamos implements RepoPrestamos {
     public Long getMaxIdPrestamo() {
         SQLiteDatabase con = db.getReadableDatabase();
         try {
-            Log.w("Existe", "Verifico id de Prestamo");
-            Cursor curPrestamos = con.rawQuery("select MAX(id) FROM " + TABLA_PRESTAMOS, null);
+            Cursor curPrestamos = con.rawQuery("select MAX(ID) AS MAX_ID FROM " + TABLA_PRESTAMOS, null);
             Long idMax = 0L;
             if (curPrestamos.moveToFirst()) {
-                Log.w("Existe", "Si existe y es " + curPrestamos.getLong(0));
-                idMax = curPrestamos.getLong(0) + 1;
+                idMax = curPrestamos.getLong(curPrestamos.getColumnIndex("MAX_ID"));
             }
             curPrestamos.close();
-            return idMax;
+            return idMax + 1;
         } finally {
-            if (con != null) con.close();
+            //if (con != null) con.close();
         }
     }
+
+    /***********************************************************************
+     * METODOS INTERNOS
+     ***********************************************************************
+     */
+    private List<Prestamo> getPrestamos(String campos, String[] valores) {
+        List<Prestamo> result = new ArrayList<Prestamo>();
+        SQLiteDatabase con = db.getReadableDatabase();
+        try {
+            Cursor curPrestamos = con.query(TABLA_PRESTAMOS, CAMPOS_PRESTAMO, campos, valores, null, null, null);
+            while (curPrestamos.moveToNext()) {
+                result.add(crearPrestamo(curPrestamos));
+            }
+            curPrestamos.close();
+            Log.w("Librex", "Préstamos pendientes " + result);
+            return result;
+        } finally {
+            //if (con != null) con.close();
+        }
+    }
+
 }

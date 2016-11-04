@@ -24,48 +24,53 @@ public class SQLLiteRepoLibros implements RepoLibros {
     PrestamosAppSQLLiteHelper db;
 
     public SQLLiteRepoLibros(Activity activity) {
-        db = new PrestamosAppSQLLiteHelper(activity);
+        db = PrestamosAppSQLLiteHelper.getInstance(activity);
     }
 
     @Override
     public void addLibro(Libro libro) {
         SQLiteDatabase con = db.getWritableDatabase();
+        try {
+            int prestado = 0;
+            if (libro.estaPrestado()) {
+                prestado = 1;
+            }
+            ContentValues values = new ContentValues();
+            values.put("id", libro.getId());
+            values.put("titulo", libro.getTitulo());
+            values.put("autor", libro.getAutor());
+            values.put("prestado", prestado);
 
-        int prestado = 0;
-        if (libro.estaPrestado()) {
-            prestado = 1;
+            con.insert("Libros", null, values);
+            Log.w("Librex", "Se creó libro " + libro);
+        } finally {
+            //if (con != null) con.close();
         }
-        ContentValues values = new ContentValues();
-        values.put("id", libro.getId());
-        values.put("titulo", libro.getTitulo());
-        values.put("autor", libro.getAutor());
-        values.put("prestado", prestado);
-
-        con.insert("Libros", null, values);
-        con.close();
-        Log.w("Librex", "Se creó libro " + libro);
     }
 
     @Override
     public Libro addLibroSiNoExiste(Libro libro) {
-        if (this.getLibro(libro) == null) {
-            this.addLibro(libro);
-        }
+        Libro libroPosta = this.getLibro(libro);
+        if (libroPosta != null) return libroPosta;
+        this.addLibro(libro);
         return libro;
     }
 
     @Override
     public List<Libro> getLibros() {
-        List<Libro> result = new ArrayList<Libro>();
         SQLiteDatabase con = db.getReadableDatabase();
+        try {
+            List<Libro> result = new ArrayList<Libro>();
 
-        Cursor curLibros = con.query("Libros", CAMPOS_LIBRO, null, null, null, null, null);
-        while (curLibros.moveToNext()) {
-            result.add(crearLibro(curLibros));
+            Cursor curLibros = con.query("Libros", CAMPOS_LIBRO, null, null, null, null, null);
+            while (curLibros.moveToNext()) {
+                result.add(crearLibro(curLibros));
+            }
+            Log.w("Librex", "getLibros | result: " + result);
+            return result;
+        } finally {
+            //if (con != null) con.close();
         }
-        con.close();
-        Log.w("Librex", "getLibros | result: " + result);
-        return result;
     }
 
     @Override
@@ -105,15 +110,15 @@ public class SQLLiteRepoLibros implements RepoLibros {
     }
 
     private Libro crearLibro(Cursor cursor) {
-        Long id = cursor.getLong(0);
-        String titulo = cursor.getString(1);
-        String autor = cursor.getString(2);
-        int prestado = cursor.getInt(3);
+        Long id = new Long(cursor.getInt(cursor.getColumnIndex("ID")));
+        String titulo = cursor.getString(cursor.getColumnIndex("TITULO"));
+        String autor = cursor.getString(cursor.getColumnIndex("AUTOR"));
+        int prestado = cursor.getInt(cursor.getColumnIndex("PRESTADO"));
         Libro libro = new Libro(id, titulo, autor);
         if (prestado == 1) {
             libro.prestar();
         }
-        Log.w("Librex", "genero un libro en memoria | id: " + libro.getId() + " | libro: " + libro);
+        Log.w("Librex", "Traigo un libro de SQLite a memoria | id: " + libro.getId() + " | libro: " + libro);
         return libro;
     }
 
@@ -137,16 +142,16 @@ public class SQLLiteRepoLibros implements RepoLibros {
      * Abstrae una busqueda general de varios libros en base a un query que se pasa como Closure
      */
     private List<Libro> internalGetLibro(Function<SQLiteDatabase, Cursor> query) {
-        List<Libro> result = new ArrayList<Libro>();
         SQLiteDatabase con = db.getReadableDatabase();
         try {
+            List<Libro> result = new ArrayList<Libro>();
             Cursor curLibros = query.apply(con);
             while (curLibros.moveToNext()) {
                 result.add(crearLibro(curLibros));
             }
             return result;
         } finally {
-            con.close();
+            //if (con != null) con.close();
         }
     }
 
@@ -155,7 +160,7 @@ public class SQLLiteRepoLibros implements RepoLibros {
         try {
             con.delete("Libros", campo, valores);
         } finally {
-            con.close();
+            //if (con != null) con.close();
         }
     }
 
