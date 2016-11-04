@@ -70,6 +70,9 @@ public class SQLLiteRepoPrestamos implements RepoPrestamos {
             con.insert(TABLA_PRESTAMOS, null, values);
             Log.w("Librex", "Se creó préstamo " + prestamo + " en SQLite");
         } finally {
+            // Intuitivamente deberíamos cerrar la conexión, no obstante, esto cierra también
+            // la base de datos, así que no debemos hacer eso
+            // :)
             //if (con != null) con.close();
         }
     }
