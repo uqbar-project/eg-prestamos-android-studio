@@ -37,7 +37,9 @@ TODO: Armar un diagrama
 * **El modelo**: lo conforma un Préstamo que tiene asociado un Contacto y un Libro. Un préstamo sabe validarse, prestarse y devolverse.
 * También se distinguen excepciones de negocio y de programa.
 * **Las vistas**: son dos: la principal (MainActivity) muestra los préstamos pendientes en un ListView específico y la segunda es la pantalla que permite dar de alta un préstamo (NuevoPrestamoActivity). Cada uno tiene su correspondiente **controller**.
-* Además hay una clase PrestamosAppBootstrap que inicializa la aplicación con datos ficticios. **IMPORTANTE:** en el caso en que lo corran en sus celulares les generará 5 contactos ficticios, por lo que conviene correrlo en un emulador siempre que disponga de una máquina lo suficientemente potente.
+* Además hay una clase PrestamosAppBootstrap que inicializa la aplicación con datos ficticios. 
+
+| **IMPORTANTE:** en el caso en que lo corran en sus celulares les generará 5 contactos ficticios, por lo que conviene correrlo en un emulador siempre que disponga de una máquina lo suficientemente potente. |
 
 
 No tenemos binding, así que el controller debe manualmente convertir los valores de la vista hacia el controller y viceversa, lo que incluye el manejo de errores.
