@@ -42,12 +42,12 @@ public class NuevoPrestamoActivity extends Activity implements TextWatcher {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.nuevo_prestamo, menu);
-        txtLibroAutocomplete = (AutoCompleteTextView) findViewById(R.id.txtLibroTituloAutocomplete);
         List<Libro> libros = PrestamosConfig.getRepoLibros(this).getLibrosPrestables();
-        txtLibroAutocomplete.setAdapter(new ArrayAdapter<Libro>(this, android.R.layout.simple_dropdown_item_1line, libros));
         for (Libro libro: libros) {
             mapaLibros.put(libro.toString(), libro);
         }
+        txtLibroAutocomplete = (AutoCompleteTextView) findViewById(R.id.txtLibroTituloAutocomplete);
+        txtLibroAutocomplete.setAdapter(new ArrayAdapter<Libro>(this, android.R.layout.simple_dropdown_item_1line, libros));
         txtLibroAutocomplete.addTextChangedListener(this);
         return true;
     }
