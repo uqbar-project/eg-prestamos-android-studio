@@ -55,7 +55,6 @@ public class PrestamosAppSQLLiteHelper extends SQLiteOpenHelper {
      */
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        Log.w("UPGRADE", "****************************************************");
         db.execSQL("DROP TABLE IF EXISTS Libros; ");
         db.execSQL("DROP TABLE IF EXISTS Prestamos; ");
         onCreate(db);

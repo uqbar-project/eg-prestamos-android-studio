@@ -78,7 +78,7 @@ public class MainActivity extends Activity implements ActionMode.Callback {
             //After this point you wait for callback in onRequestPermissionsResult(int, String[], int[]) overriden method
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.WRITE_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(new String[]{Manifest.permission.READ_CONTACTS}, PERMISSIONS_REQUEST_WRITE_CONTACTS);
+            requestPermissions(new String[]{Manifest.permission.WRITE_CONTACTS}, PERMISSIONS_REQUEST_WRITE_CONTACTS);
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(new String[]{Manifest.permission.CALL_PHONE}, PERMISSIONS_REQUEST_CALL_PHONE);
@@ -125,12 +125,12 @@ public class MainActivity extends Activity implements ActionMode.Callback {
 
     @Override
     public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-        int posicion = Integer.parseInt(mActionMode.getTag().toString());
         List<Prestamo> prestamosPendientes = repoPrestamos.getPrestamosPendientes();
         if (prestamosPendientes.isEmpty()) {
             Toast.makeText(this, "No hay préstamos para trabajar", Toast.LENGTH_SHORT).show();
             return false;
         }
+        int posicion = Integer.parseInt(mActionMode.getTag().toString());
         Prestamo prestamo = prestamosPendientes.get(posicion);
         switch (item.getItemId()) {
             case R.id.action_call_contact:
@@ -171,10 +171,10 @@ public class MainActivity extends Activity implements ActionMode.Callback {
         Intent callIntent = new Intent(Intent.ACTION_CALL);
         callIntent.setData(Uri.parse("tel:" + telefono));
         try {
-            Log.w("Voy a llamar", "Intent iniciado");
             startActivity(callIntent);
         } catch (Exception e) {
             Log.e("ERROR al llamar ", e.getMessage());
+            Toast.makeText(this.getApplicationContext(), "Hubo error al llamar al numero " + telefono, Toast.LENGTH_SHORT).show();
             return false;
         }
         return true;

@@ -44,7 +44,7 @@ public class CollectionBasedPrestamos implements RepoPrestamos {
 
     @Override
     public List<Prestamo> getPrestamosPendientes() {
-        // Solo se puede si se instala retrolambda: https://github.com/evant/gradle-retrolambda
+        // Hay que configurar el proyecto para que utilice Jackson
         return this.prestamos
                 .stream()
                 .filter((Prestamo prestamo) -> prestamo.estaPendiente())

@@ -30,8 +30,6 @@ Este proyecto está generado para
 
 ## La arquitectura
 
-TODO: Armar un diagrama
-
 * Tenemos un componente encargado del **origen de datos**, con elementos que persisten a SQLite (SQLLiteRepoPrestamos y SQLLiteRepoLibros) y elementos que trabajan en memoria (CollectionBasedPrestamos y CollectionBasedLibros)
 * En el mismo package se ubica un componente que se encarga de consumir los servicios de la API de Contactos de Android (PhoneBasedContactos), que funciona como **adapter** contra un objeto de dominio que representa un Contacto
 * **El modelo**: lo conforma un Préstamo que tiene asociado un Contacto y un Libro. Un préstamo sabe validarse, prestarse y devolverse.
@@ -39,7 +37,16 @@ TODO: Armar un diagrama
 * **Las vistas**: son dos: la principal (MainActivity) muestra los préstamos pendientes en un ListView específico y la segunda es la pantalla que permite dar de alta un préstamo (NuevoPrestamoActivity). Cada uno tiene su correspondiente **controller**.
 * Además hay una clase PrestamosAppBootstrap que inicializa la aplicación con datos ficticios. 
 
-| **IMPORTANTE:** en el caso en que lo corran en sus celulares les generará 5 contactos ficticios, por lo que conviene correrlo en un emulador siempre que disponga de una máquina lo suficientemente potente. |
-
+**IMPORTANTE:** en el caso en que lo corran en sus celulares les generará 5 contactos ficticios, por lo que conviene correrlo en un emulador siempre que disponga de una máquina lo suficientemente potente.
 
 No tenemos binding, así que el controller debe manualmente convertir los valores de la vista hacia el controller y viceversa, lo que incluye el manejo de errores.
+
+## Links con explicaciones adicionales
+
+* [Pantalla principal: lista de préstamos](http://algo3.uqbar-project.org/temario/05-mobile/lista-de-prestamos)
+* [Mejorando el layout de la lista de préstamos](http://algo3.uqbar-project.org/temario/05-mobile/mejorando-el-layout-de-la-lista-de-prstamos)
+* [Intents. Contactar un deudor](http://algo3.uqbar-project.org/temario/05-mobile/contactar)
+* [Interacción con API ContentProvider para crear o visualizar contactos](http://algo3.uqbar-project.org/temario/05-mobile/interaccion-con-api-contactos)
+* [Persistencia a un medio local con SQLite](http://algo3.uqbar-project.org/temario/05-mobile/persistencia-a-un-medio-local)
+* [Crear un nuevo préstamo](http://algo3.uqbar-project.org/temario/05-mobile/crear-nuevo-prestamo)
+
